@@ -9,6 +9,7 @@ import co.aikar.commands.PaperCommandManager;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import me.nahu.scheduler.wrapper.FoliaWrappedJavaPlugin;
+import net.zithium.deluxecoinflip.api.CustomStatManager;
 import net.zithium.deluxecoinflip.api.DeluxeCoinflipAPI;
 import net.zithium.deluxecoinflip.cache.ActiveGamesCache;
 import net.zithium.deluxecoinflip.command.CoinflipCommand;
@@ -62,6 +63,7 @@ public class DeluxeCoinflipPlugin extends FoliaWrappedJavaPlugin implements Delu
     private InventoryManager inventoryManager;
     private EconomyManager economyManager;
     private DiscordHook discordHook;
+    private CustomStatManager customStatManager;
 
     private Cache<UUID, CoinflipGame> listenerCache;
 
@@ -110,6 +112,8 @@ public class DeluxeCoinflipPlugin extends FoliaWrappedJavaPlugin implements Delu
         }
 
         discordHook = new DiscordHook(this);
+        
+        customStatManager = new CustomStatManager(getLogger());
 
         gameManager = new GameManager(this);
 
@@ -216,6 +220,10 @@ public class DeluxeCoinflipPlugin extends FoliaWrappedJavaPlugin implements Delu
         return discordHook;
     }
 
+    public CustomStatManager getCustomStatManager() {
+        return customStatManager;
+    }
+
     public Cache<UUID, CoinflipGame> getListenerCache() {
         return listenerCache;
     }
@@ -228,6 +236,16 @@ public class DeluxeCoinflipPlugin extends FoliaWrappedJavaPlugin implements Delu
     @Override
     public void registerEconomyProvider(EconomyProvider provider, String requiredPlugin) {
         economyManager.registerEconomyProvider(provider, requiredPlugin);
+    }
+
+    @Override
+    public boolean registerCustomStatProvider(net.zithium.deluxecoinflip.api.CustomStatProvider provider) {
+        return customStatManager.registerProvider(provider);
+    }
+
+    @Override
+    public boolean unregisterCustomStatProvider(String providerId) {
+        return customStatManager.unregisterProvider(providerId);
     }
 
     @Override

@@ -338,7 +338,7 @@ public class GamesGUI {
     }
 
     private String applyPlayerStats(String line, Player player, PlayerData data) {
-        return line
+        String result = line
                 .replace("{WINS}", String.valueOf(data.getWins()))
                 .replace("{LOSSES}", String.valueOf(data.getLosses()))
                 .replace("{PROFIT}", String.valueOf(data.getProfitFormatted()))
@@ -346,6 +346,9 @@ public class GamesGUI {
                 .replace("{TOTAL_LOSSES}", String.valueOf(data.getTotalLossesFormatted()))
                 .replace("{TOTAL_GAMBLED}", String.valueOf(data.getTotalGambledFormatted()))
                 .replace("{PLAYER}", player.getName());
+
+        // Apply custom stat placeholders from external plugins
+        return plugin.getCustomStatManager().replacePlaceholders(player, result);
     }
 
     private void playConfiguredSound(Player player) {

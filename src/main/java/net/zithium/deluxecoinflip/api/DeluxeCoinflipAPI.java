@@ -23,6 +23,27 @@ public interface DeluxeCoinflipAPI {
     void registerEconomyProvider(EconomyProvider provider, String requiredPlugin);
 
     /**
+     * Register a custom stat provider to add custom placeholders.
+     * This allows external plugins to add their own stats that can be displayed
+     * in DeluxeCoinflip menus and messages using {PLACEHOLDER_NAME} format.
+     * 
+     * Example: DeluxeLifestealBridge can register a provider to track
+     * {HEARTS_WIN}, {HEARTS_LOST}, and {HEARTS_BET}
+     *
+     * @param provider The custom stat provider to register
+     * @return true if registered successfully, false if a provider with the same ID already exists
+     */
+    boolean registerCustomStatProvider(CustomStatProvider provider);
+
+    /**
+     * Unregister a custom stat provider.
+     *
+     * @param providerId The ID of the provider to unregister
+     * @return true if a provider was removed, false otherwise
+     */
+    boolean unregisterCustomStatProvider(String providerId);
+
+    /**
      * Fetch player data
      *
      * @param player The player to search

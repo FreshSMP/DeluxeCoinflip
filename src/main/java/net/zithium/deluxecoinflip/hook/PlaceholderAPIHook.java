@@ -65,7 +65,9 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         }
 
         PlayerData playerData = playerDataOptional.get();
-        return switch (identifier) {
+
+        // Check default placeholders first
+        String defaultValue = switch (identifier) {
             case "games_played" -> String.valueOf(playerData.getTotalGames());
             case "wins" -> String.valueOf(playerData.getWins());
             case "win_percentage" -> String.valueOf(playerData.getWinPercentage());
@@ -80,5 +82,14 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
             case "total_games" -> String.valueOf(plugin.getGameManager().getCoinflipGames().size());
             default -> null;
         };
+
+        // If default placeholder found, return it
+        if (defaultValue != null) {
+            return defaultValue;
+        }
+
+        // Try custom stat providers (converts identifier to uppercase for consistency)
+        String customValue = plugin.getCustomStatManager().getPlaceholderValue(player, identifier.toUpperCase());
+        return customValue != null ? customValue : null;
     }
 }
