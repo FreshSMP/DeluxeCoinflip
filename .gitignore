@@ -114,7 +114,3 @@ local.properties
 *.war
 *.ear
 **/*~
-
-# Documentation (not for public repo)
-CUSTOM_STATS_EXAMPLE.md
-DLB_INTEGRATION_PROMPT.md
